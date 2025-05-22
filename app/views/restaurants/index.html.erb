@@ -1,0 +1,30 @@
+<div class="container my-5">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="fw-bold">All Restaurants</h1>
+    <%= link_to '➕ Add a New Restaurant', new_restaurant_path, class: "btn btn-primary" %>
+  </div>
+
+  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+    <% @restaurants.each do |restaurant| %>
+      <div class="col">
+        <div class="card shadow-sm h-100">
+          <div class="card-body">
+            <h5 class="card-title"><%= link_to restaurant.name, restaurant_path(restaurant), class: "stretched-link text-decoration-none text-dark" %></h5>
+            <p class="card-text">
+              <span class="badge bg-secondary"><%= restaurant.category.capitalize %></span><br>
+              <small class="text-muted"><%= restaurant.address %></small><br>
+              <small class="text-muted"><%= restaurant.phone_number %></small>
+              <p class="mt-2">
+                <% if restaurant.average_rating %>
+                  <strong>Average Rating:</strong> <%= restaurant.average_rating %> ⭐
+                <% else %>
+                  <em class="text-muted">No reviews yet</em>
+                <% end %>
+              </p>
+            </p>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

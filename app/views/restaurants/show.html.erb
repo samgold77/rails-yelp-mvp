@@ -1,0 +1,75 @@
+<div class="container my-5">
+  <!-- Carte du restaurant -->
+  <div class="card shadow-sm mb-4">
+    <div class="card-body">
+      <h1 class="card-title text-center mb-4"><%= @restaurant.name %></h1>
+
+      <ul class="list-group list-group-flush mb-3">
+        <li class="list-group-item">
+          <strong>Category:</strong>
+          <span class="badge bg-secondary"><%= @restaurant.category.capitalize %></span>
+        </li>
+        <li class="list-group-item">
+          <strong>Address:</strong>
+          <%= @restaurant.address %>
+        </li>
+        <li class="list-group-item">
+          <strong>Phone:</strong>
+          <%= @restaurant.phone_number %>
+        </li>
+      </ul>
+
+      <div class="d-flex justify-content-between">
+        <%= link_to '← Back to list', restaurants_path, class: "btn btn-outline-secondary" %>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section des avis -->
+  <div class="card">
+    <div class="card-header">
+      <h4 class="mb-0">Reviews</h4>
+    </div>
+    <div class="card-body">
+      <% if @restaurant.reviews.any? %>
+        <% @restaurant.reviews.each do |review| %>
+          <div class="border-bottom pb-3 mb-3">
+            <p><strong>Rating:</strong> <%= review.rating %> ⭐</p>
+            <p><%= review.content %></p>
+          </div>
+        <% end %>
+      <% else %>
+        <p class="text-muted">No reviews yet for this restaurant.</p>
+      <% end %>
+    </div>
+  </div>
+</div>
+<!-- Formulaire pour laisser un avis -->
+<div class="card mt-5">
+  <div class="card-header">
+    <h4>Leave a Review</h4>
+  </div>
+  <div class="card-body">
+    <%= form_with model: [@restaurant, Review.new], local: true do |form| %>
+      <% if @review&.errors&.any? %>
+        <div class="alert alert-danger">
+          <ul>
+            <% @review.errors.full_messages.each do |msg| %>
+              <li><%= msg %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <div class="mb-3">
+        <%= form.label :rating, class: "form-label" %>
+        <%= form.number_field :rating, in: 0..5, class: "form-control" %>
+      </div>
+
+      <div class="mb-3">
+        <%= form.label :content, class: "form-label" %>
+        <%= form.text_area :content, rows: 3, class: "form-control" %>
+      </div>
+
+      <%= form.submit "Submit Review", class: "btn btn-success" %>
+    <% end %>
